@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Valgomat 2025 — Partinavnet</title>
+  <style>
+    body {font-family:sans-serif; margin:0; background:linear-gradient(135deg,#35ebe8,#25c6a3); display:flex; justify-content:center; align-items:center; min-height:100vh;}
+    .card {background:#fff; border-radius:12px; padding:24px; max-width:600px; width:100%; box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+    .meta {color:#555; font-size:0.9rem; margin-bottom:8px;}
+    .question-text {font-size:1.2rem; font-weight:600; margin-bottom:20px;}
+    .options {display:flex; justify-content:space-between; margin-bottom:20px;}
+    .option {display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; cursor:pointer;}
+    .circle {width:24px; height:24px; border:2px solid #bbb; border-radius:50%; display:flex; justify-content:center; align-items:center; transition:all 0.2s;}
+    .option.active .circle {border-color:#18dc87; background:#2b6ef6;}
+    .label {font-size:0.85rem; color:#903b3b;}
+    .actions {text-align:center;}
+    .btn {background:#2b6ef6; color:#fff; border:none; padding:10px 18px; border-radius:20px; font-size:0.9rem; cursor:pointer;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="meta" id="progress">Spørsmål 1 av 5</div>
+    <div class="meta" id="category">Økonomi</div>
+    <div class="question-text" id="questionText">Privat sektor bør utgjøre en større andel av økonomien enn offentlig sektor.</div>
+    <div class="options" id="options"></div>
+    <div class="actions">
+      <button class="btn" id="nextBtn">Hopp over →</button>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      {id:'q1',cat:'Økonomi',text:'Privat sektor bør utgjøre en større andel av økonomien enn offentlig sektor.',party:1},
+      {id:'q2',cat:'Klima',text:'Norge bør slutte å lete etter nye oljefelt.',party:-2},
+      {id:'q3',cat:'Velferd',text:'Velferdsordningene bør bevares på dagens nivå.',party:1},
+      {id:'q4',cat:'Utdanning',text:'Det bør satses mer på yrkesfag i videregående skole.',party:1},
+      {id:'q5',cat:'Europa',text:'Norge bør søke EU-medlemskap.',party:-1}
+    ];
+
+    const SCALE = [
+      {label:'Helt uenig', value:-2},
+      {label:'Litt uenig', value:-1},
+      {label:'Nøytral', value:0},
+      {label:'Litt enig', value:1},
+      {label:'Helt enig', value:2}
+    ];
+
+    let index=0;
+    const answers={};
+
+    const progress=document.getElementById('progress');
+    const category=document.getElementById('category');
+    const qText=document.getElementById('questionText');
+    const options=document.getElementById('options');
+    const nextBtn=document.getElementById('nextBtn');
+
+    function renderQuestion(){
+      const q=QUESTIONS[index];
+      progress.textContent=`Spørsmål ${index+1} av ${QUESTIONS.length}`;
+      category.textContent=q.cat;
+      qText.textContent=q.text;
+      options.innerHTML='';
+      SCALE.forEach(s=>{
+        const opt=document.createElement('div');
+        opt.className='option';
+        if(answers[q.id]===s.value) opt.classList.add('active');
+        const circle=document.createElement('div'); circle.className='circle';
+        const label=document.createElement('div'); label.className='label'; label.textContent=s.label;
+        opt.appendChild(circle); opt.appendChild(label);
+        opt.addEventListener('click',()=>{
+          answers[q.id]=s.value;
+          renderQuestion();
+        });
+        options.appendChild(opt);
+      });
+      nextBtn.textContent=(index<QUESTIONS.length-1)?'Neste →':'Se resultat';
+    }
+
+    nextBtn.addEventListener('click',()=>{
+      if(index<QUESTIONS.length-1){
+        index++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult(){
+      let matched = 0;
+      let count = 0;
+      QUESTIONS.forEach(q=>{
+        if(answers[q.id]!==undefined){
+          const diff=Math.abs(answers[q.id]-q.party);
+          matched += (4-diff)/4;
+          count++;
+        }
+      });
+      const score=Math.round((matched/count)*100);
+      document.querySelector('.card').innerHTML=`<h2>Resultat</h2><p>Du er ${score}% enig med partiet.</p>`;
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>
