@@ -40,4 +40,12 @@ doucument.getElementById("nextBtn").addEventListener("click", () => {
     }
 });
 }
+questionArea.addEventListener("click", (e) => {
+    if(e.target.classlist.contains("option")){
+        const value = parseInt(e.target.dataset.value);
+        const qid = QUESTIONS[currentIndex].id;
+        answers[qid] = value;
+        console.log("svar lagret:", answers);
+    }
+});
 
