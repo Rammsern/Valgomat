@@ -17,6 +17,7 @@ function showQuestion(index){
     <><h2>${q.cat}</h2><p>${q.text}</p></>
     `;
 }
+let currentIndex = 0;
 function showQuestion(index) {
     const q = QUESTIONS[index];
     questionArea.innerHTML = `
@@ -30,4 +31,13 @@ function showQuestion(index) {
     </div>
     <button id="nextBtn">neste</button>
     `;
+doucument.getElementById("nextBtn").addEventListener("click", () => {
+    currentIndex++;
+    if(currentIndex < QUESTIONS.length){
+        showQuestion(currentIndex);
+    } else {
+        showResult();
+    }
+});
 }
+
