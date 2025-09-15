@@ -1,6 +1,6 @@
 body {
   font-family: sans-serif;
-  background: #f4f4f4;
+  background: #3a3d93;
   margin: 0;
   padding: 0;
 }
@@ -8,7 +8,7 @@ body {
 .card {
   max-width: 500px;
   margin: 50px auto;
-  background: #fff;
+  background: #499bee;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -18,7 +18,7 @@ button {
   padding: 10px 20px;
   border: none;
   background: #2b6ef6;
-  color: white;
+  color: rgb(0, 39, 31);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -29,7 +29,7 @@ button {
     margin: 16px 0;
 }
 .option {
-background: #eee;
+background: #27d8cf;
 padding: 8px;
 border-radius: 6px;
 cursor: pointer;

@@ -3,13 +3,15 @@ const QUESTIONS = [
 {id: 'q2', cat:'klima', text:'Norge bør slutte å lete etter nye oljefelt.'},
 {id: 'q3', cat:'velferd', text:'velferdsordningene bør bevares på dagens nivå.'},
 ];
-console.log("spørsmål lastet:", questions);
+console.log("spørsmål lastet:", QUESTIONS);
 
 const startBtn = document.getElementById("startBtn");
 const questionArea = document.getElementById("questionArea");
 
 startBtn.addEventListener("click", () => {
-    showQuestion(0);
+    currentIndex = 0;
+    console.log("hei")
+    showQuestion(currentIndex);
 });
 function showQuestion(index){
     const q = QUESTIONS[index];
