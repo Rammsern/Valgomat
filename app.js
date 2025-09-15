@@ -5,3 +5,15 @@ const QUESTIONS = [
 ];
 console.log("spørsmål lastet:", questions);
 
+const startBtn = document.getElementById("startBtn");
+const questionArea = document.getElementById("questionArea");
+
+startBtn.addEventListener("click", () => {
+    showQuestion(0);
+});
+function showQuestion(index){
+    const q = QUESTIONS[index];
+    questionArea.innerHTML = `
+    <><h2>${q.cat}</h2><p>${q.text}</p></>
+    `;
+}
