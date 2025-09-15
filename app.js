@@ -49,3 +49,20 @@ questionArea.addEventListener("click", (e) => {
     }
 });
 
+function showResult() {
+    let sum = 0;
+    let count = 0;
+
+    QUESTIONS.forEach(q => {
+        if(answers[q.id] !== undefined) {
+            sum += answers[q.id];
+            count++;
+        }
+    });
+const avg = sum / count;
+questionArea.innerHTML = `
+<h2>Resultat</h2>
+<p>gjennomsnittlig enighet: ${avg.toFixed(2)}</p>
+`;
+}
+
