@@ -31,9 +31,9 @@ function showQuestion(index) {
     <button class="option" data-value="1">litt enig</button>
     <button class="option" data-value="2">Helt enig</button>
     </div>
-    <button id="nextBtn">neste</button>
+    <button id="nextBtn">${index < QUESTIONS.length-1 ? "neste" : "se resultat"}</button>
     `;
-doucument.getElementById("nextBtn").addEventListener("click", () => {
+document.getElementById("nextBtn").addEventListener("click", () => {
     currentIndex++;
     if(currentIndex < QUESTIONS.length){
         showQuestion(currentIndex);
@@ -48,6 +48,8 @@ questionArea.addEventListener("click", (e) => {
         const qid = QUESTIONS[currentIndex].id;
         answers[qid] = value;
         console.log("svar lagret:", answers);
+        document.querySelectorAll(".option").forEach(btn => btn.classList.remove("active"));
+        e.target.classList.add("active");
     }
 });
 
@@ -61,7 +63,7 @@ function showResult() {
             count++;
         }
     });
-const avg = sum / count;
+const avg = count > 0 ? sum / count : 0;
 questionArea.innerHTML = `
 <h2>Resultat</h2>
 <p>gjennomsnittlig enighet: ${avg.toFixed(2)}</p>
