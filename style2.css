@@ -22,3 +22,20 @@ button {
   border-radius: 6px;
   cursor: pointer;
 }
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+}
+.option {
+background: #eee;
+padding: 8px;
+border-radius: 6px;
+cursor: pointer;
+border: 1px solid #ccc;
+}
+option:hover {
+background: #2b6ef6;
+color: white;
+}
