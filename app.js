@@ -63,7 +63,7 @@ function showResult() {
             count++;
         }
     });
-const avg = count > 0 ? sum / count : 0;
+const avg = count > 0 ? (sum / count) : 0;
 questionArea.innerHTML = `
 <h2>Resultat</h2>
 <p>gjennomsnittlig enighet: ${avg.toFixed(2)}</p>
