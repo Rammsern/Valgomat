@@ -65,7 +65,7 @@ function showQuestion(index) {
 
     
     if (answers[q.id] !== undefined && answers[q.id] === opt.value) {
-      li.style.color = "red";
+      li.style.color = "yellow";
     }
 
     li.addEventListener("click", () => {
@@ -99,7 +99,7 @@ function showResult() {
     }
   });
 
-  const avgPercent = count > 0 ? (sum / count) * 10 : 0; // 0..10 -> 0..100%
+  const avgPercent = count > 0 ? (sum / count) * 10 : 0;
   questionArea.innerHTML = `
     <h2>Resultat</h2>
     <p>Gjennomsnittlig enighet: ${avgPercent.toFixed(1)}%</p>

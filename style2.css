@@ -1,8 +1,9 @@
 body {
   font-family: sans-serif;
-  background: #5a5dbb;
+  background: #00555b;
   margin: 0;
   padding: 0;
+  color: white;
 }
 
 .card {
@@ -11,14 +12,14 @@ body {
   background: #499bee;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgb(0, 0, 0);
 }
 
 button {
   padding: 10px 20px;
   border: none;
   background: #2b6ef6;
-  color: rgb(0, 39, 31);
+  color: rgb(0, 0, 0);
   border-radius: 6px;
   cursor: pointer;
 }
