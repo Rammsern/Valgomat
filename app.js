@@ -1,75 +1,109 @@
 const QUESTIONS = [
-{id: 'q1', cat:'økonomi', text:'privat sektor bør utgjøre en større andel av økonomien.'},
-{id: 'q2', cat:'klima', text:'Norge bør slutte å lete etter nye oljefelt.'},
-{id: 'q3', cat:'velferd', text:'velferdsordningene bør bevares på dagens nivå.'},
+  { id: 'q1', cat: 'innvandring', text: 'Norge bør ha en strengere innvandringspolitikk og ta imot færre flyktninger.' },
+  { id: 'q2', cat: 'skatter', text: 'Skattene og avgiftene bør reduseres, særlig bilrelaterte avgifter som bompenger.' },
+  { id: 'q3', cat: 'olje', text: 'Norge bør satse videre på olje- og gassnæringen og lete etter nye oljefelt.' },
 ];
-console.log("spørsmål lastet:", QUESTIONS);
 
-let answers = [];
-
+let currentIndex = 0;
+let answers = {};
 
 const startBtn = document.getElementById("startBtn");
 const questionArea = document.getElementById("questionArea");
 
-startBtn.addEventListener("click", () => {
+if (!startBtn || !questionArea) {
+  console.error("Fant ikke startBtn eller questionArea i DOM.");
+} else {
+  startBtn.addEventListener("click", () => {
     currentIndex = 0;
-    console.log("hei")
     showQuestion(currentIndex);
-});
-function showQuestion(index){
-    const q = QUESTIONS[index];
-    questionArea.innerHTML = `
-    <><h2>${q.cat}</h2><p>${q.text}</p></>
-    `;
+  });
 }
-let currentIndex = 0;
+
 function showQuestion(index) {
-    const q = QUESTIONS[index];
-    questionArea.innerHTML = `
-    <><h2>${q.cat}</h2><p>${q.text}</p></>
-    <div class="options">
-    <button class="option" data-value="0">Helt uenig</button>
-    <button class="option" data-value="0">litt uenig</button>
-    <button class="option" data-value="0">nøytral</button>
-    <button class="option" data-value="5">litt enig</button>
-    <button class="option" data-value="10">Helt enig</button>
-    </div>
-    <button id="nextBtn">${index < QUESTIONS.length-1 ? "neste" : "se resultat"}</button>
-    `;
-document.getElementById("nextBtn").addEventListener("click", () => {
+  const q = QUESTIONS[index];
+  questionArea.innerHTML = "";
+  const h2 = document.createElement("h2");
+  h2.textContent = q.cat;
+  const p = document.createElement("p");
+  p.textContent = q.text;
+  questionArea.appendChild(h2);
+  questionArea.appendChild(p);
+
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = index < QUESTIONS.length - 1 ? "Neste" : "Se resultat";
+  nextBtn.disabled = answers[q.id] === undefined;
+  nextBtn.style.marginTop = "12px";
+
+  nextBtn.addEventListener("click", () => {
     currentIndex++;
-    if(currentIndex < QUESTIONS.length){
-        showQuestion(currentIndex);
+    if (currentIndex < QUESTIONS.length) {
+      showQuestion(currentIndex);
     } else {
-        showResult();
+      showResult();
     }
-});
+  });
+
+  const ul = document.createElement("ul");
+  ul.style.listStyle = "none";
+  ul.style.padding = "0";
+
+  const options = [
+    { label: "Helt uenig", value: 0 },
+    { label: "Litt uenig",  value: 2 },
+    { label: "Nøytral",     value: 5 },
+    { label: "Litt enig",   value: 7 },
+    { label: "Helt enig",   value: 10 }
+  ];
+
+  options.forEach(opt => {
+    const li = document.createElement("li");
+    li.textContent = opt.label;
+    li.dataset.value = opt.value;
+    li.style.color = "white";
+    li.style.cursor = "pointer";
+    li.style.padding = "8px 0";
+
+    
+    if (answers[q.id] !== undefined && answers[q.id] === opt.value) {
+      li.style.color = "red";
+    }
+
+    li.addEventListener("click", () => {
+      answers[q.id] = opt.value;
+      console.log("svar lagret:", answers);
+
+      ul.querySelectorAll("li").forEach(el => {
+        el.style.color = "white";
+      });
+      li.style.color = "yellow";
+      li.style.transform = "scale(1.2)";
+      setTimeout(() => (li.style.transform = "scale(1)"), 200);
+      nextBtn.disabled = false;
+    });
+
+    ul.appendChild(li);
+  });
+
+  questionArea.appendChild(ul);
+  questionArea.appendChild(nextBtn);
 }
-questionArea.addEventListener("click", (e) => {
-    if(e.target.classList.contains("option")){
-        const value = parseInt(e.target.dataset.value);
-        const qid = QUESTIONS[currentIndex].id;
-        answers[qid] = value;
-        console.log("svar lagret:", answers);
-        document.querySelectorAll(".option").forEach(btn => btn.classList.remove("active"));
-        e.target.classList.add("active");
-    }
-});
 
 function showResult() {
-    let sum = 0;
-    let count = 0;
+  let sum = 0;
+  let count = 0;
 
-    QUESTIONS.forEach(q => {
-        if(answers[q.id] !== undefined) {
-            sum += answers[q.id] * 10;
-            count++;
-        }
-    });
-const avg = count > 0 ? (sum / count) : 0;
-questionArea.innerHTML = `
-<h2>Resultat</h2>
-<p>gjennomsnittlig enighet: ${avg}%</p>
-`;
+  QUESTIONS.forEach(q => {
+    if (answers[q.id] !== undefined) {
+      sum += answers[q.id];
+      count++;
+    }
+  });
+
+  const avgPercent = count > 0 ? (sum / count) * 10 : 0; // 0..10 -> 0..100%
+  questionArea.innerHTML = `
+    <h2>Resultat</h2>
+    <p>Gjennomsnittlig enighet: ${avgPercent.toFixed(1)}%</p>
+  `;
 }
+
 
